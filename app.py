@@ -7,7 +7,7 @@ dicci = {"1":"uno", "dos":"2"}
 print(dicci['1'])
 print(dicci['dos'])
 try: 
-    print(dicci['4'])
+    print(dicci['2'])
 except:
     print("error")
 
@@ -41,9 +41,10 @@ def new_tiny(key = None):
 app = Flask(__name__)
 
 
-@app.route("/urls", methods = ["DELETE"] )
+@app.route("/urls")
 def urls():
-    return "prueba de otras rutas"
+    pass
+
 #Entrar a un Tiny_URL 
 @app.route("/<string_v>")
 def prueba(string_v=None):
