@@ -24,29 +24,51 @@ user = {"Nombre":"Cruz del Cid", "Carnet":"20200394", "edad":"17", "País":"Guat
 conn.hmset("my_information", user)
 conn.set("alv", "Hola mundo")
 
-print(conn.hgetall("my_information"))
+print(conn.hgetall("my_information", "Nombre"))
 print(type(conn.hgetall("my_information")))
 
 print(conn.hget("my_information", "Nombre"))
 print(conn.get("alv"))
+""" 
 
-"""
+#Investigar codificador
+#
+
+def new_tiny(key = None): 
+    pass
+
 
 app = Flask(__name__)
-#Tiny_URL 
-@app.route("/")
+
+
+@app.route("/urls", methods = ["DELETE"] )
+def urls():
+    return "prueba de otras rutas"
+#Entrar a un Tiny_URL 
 @app.route("/<string_v>")
 def prueba(string_v=None):
-    if (string_v == None): 
-        return "HELLO WORLD"
-    else: 
-        return render_template("index.html", string_v = string_v)
+    #Buscar 
+    #Devolver URL y Código: 301 
+    #Invetigar para que se retorne la página 
+    return "Palabra: " + string_v
 
 
+#New tiny
+#methods = ["GET", "SET"]
+@app.route("/", methods = ["GET", "SET"])
+def tiny_url(): 
+    if (request.method == "GET"):
+
+        pass 
+    #comprobar
+    #crear un tiny
+    return "HELLO WORLD"
+
+
+
+#https://tin.com/admin
 #URL list
-@app.route("/urls")
-def urls():
-    pass
+
 
 @app.route("/stats")
 def stats():
