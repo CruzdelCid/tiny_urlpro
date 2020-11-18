@@ -7,11 +7,18 @@ dicci = {"1":"uno", "dos":"2"}
 print(dicci['1'])
 print(dicci['dos'])
 
-#https://www.w3schools.com/python/python_try_except.asp
+#https://www.w3schools.com/python/python_try_except.asp usemos try y except para evitarnos problemas
 try: 
     print(dicci['4'])
 except:
     print("error")
+
+
+#https://riptutorial.com/es/flask/example/7981/rutas-basicas con esto ponemos convertidores del id en la URL
+
+
+
+
 
 
 """
@@ -35,9 +42,18 @@ print(conn.get("alv"))
 """
 app = Flask(__name__)
 @app.route("/")
-def hello_word():
-    return "Hello Word"
-
+@app.route("/<string_v>")
+def prueba(string_v=None):
+    if (string_v==None): 
+        return "HELLO WORLD"
+    else: 
+        return "Palabra: " + string_v
+"""
+    try:
+        return "Palabra: " + string_v
+    except: 
+        return "HELLO WORLD!"
+"""
 @app.route("/nombre")
 def nombre():
     return "c"
@@ -55,4 +71,4 @@ def pais():
     return "Guatemala"
 
 if __name__ == "__main__": 
-    app.run(host = "peronal_url", port = 5000, debug = True)
+    app.run(host = "0.0.0.0", port = 5000, debug = True)
