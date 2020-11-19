@@ -39,9 +39,7 @@ print("PRUEBA GETALL DE REDIS")
 redis  = Redis('localhost', port=6379, charset="utf-8", decode_responses=True)
 #redis_visitas = Redis('localhost', port=7000, charset="utf-8", decode_responses=True)
 
-#        print(redis.setnx(f"{key_2}_date", datetime.now().strftime('%d-%m-%Y %H:%M:%S')))
-#redis_visitas = Redis('localhost', port=6379, charset="utf-8", decode_responses=True)
-#redis_date = Redis('localhost', port=6379, charset="utf-8", decode_responses=True)
+# print(redis.setnx(f"{key_2}_date", datetime.now().strftime('%d-%m-%Y %H:%M:%S')))
 
 def comprobar(key_1):
     return False
