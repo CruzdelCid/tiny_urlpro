@@ -4,7 +4,9 @@ from datetime import date
 from datetime import datetime
 
 print("PRUEBA PARA VERIFICAR SI ES UNA PÁGINA")
-paginas = {'', 'stats', 'admin', 'load', 'search'}
+paginas = {'', 'urls',  'stats', 'admin', 'load', 'search'}
+
+
 
 """
 print('stats' in paginas)
@@ -35,14 +37,19 @@ print("")
 print("")
 print("PRUEBA GETALL DE REDIS")
 redis  = Redis('localhost', port=6379, charset="utf-8", decode_responses=True)
+redis_visitas = Redis('localhost', port=7000, charset="utf-8", decode_responses=True)
+
+
 #edis_visitas = Redis('localhost', port=6379, charset="utf-8", decode_responses=True)
 #redis_date = Redis('localhost', port=6379, charset="utf-8", decode_responses=True)
 
 def comprobar(key_1):
-    val = False
     if (key_1 in paginas):
-        val = True
-    return val 
+        return True
+    elif(redis.get(key_1) == ""): 
+        return False
+    else: 
+        return True
 
 def crear(key_2, valor):
     print("")
@@ -70,12 +77,26 @@ crear("url", val)
 
 crear("stats", val)
 
+crear("Daniel", "www.facebook.com/daniel")
+
 crear(key, val)
 
-redis.delete(key)
+
+
+redis.delete('*')
 redis.delete(f"{key}_visitas")
 redis.delete(f"{key}_date")
 
+
+print("ALV")
+lista = redis.keys('*')
+print(lista)
+
+for m in lista: 
+    redis.delete(m)
+
+print(redis.keys('*'))
+print(redis.keys('*'))
 
 
 
