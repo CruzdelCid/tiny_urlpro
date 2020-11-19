@@ -1,9 +1,9 @@
-<<<<<<< HEAD
 COMANDOS DE REDIS
 - set: hace set de un key y un val cuando este no existe 
 - get: pide un valor cuando se le entrega el key
 - hgetall: retorna todos los valores
-=======
+
+
 1. Pagina de URLs Tiny (form para crear tinys y recibirlo) USAR SETNX
     Puede recibir texto para crear diccionarios en redis y debe imprimir texto
 2. Pagina para ver todas las URLs (y eliminar alguna)
@@ -20,4 +20,3 @@ PRUEBAS PEND:
 FUNCIONES:
 1. Comprobar: verifica si el key ya existe
 2. Buscar: busca una URL (el key)
->>>>>>> 400c38ed23a0e37964c5bc470755dbe940565aa6

@@ -53,22 +53,6 @@ def new_tiny(key = None):
 app = Flask(__name__)
 
 
-<<<<<<< HEAD
-=======
-@app.route("/urls")
-def urls():
-    pass
-
-#Entrar a un Tiny_URL 
-@app.route("/<string_v>")
-def prueba(string_v=None):
-    #Buscar 
-    #Devolver URL y Código: 301 
-    #Invetigar para que se retorne la página 
-    return "Palabra: " + string_v
-
-
->>>>>>> 400c38ed23a0e37964c5bc470755dbe940565aa6
 #New tiny
 #methods = ["GET", "SET"]
 @app.route("/", methods = ["GET", "SET"])

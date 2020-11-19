@@ -6,6 +6,7 @@ from datetime import datetime
 print("PRUEBA PARA VERIFICAR SI ES UNA PÁGINA")
 paginas = {'', 'stats', 'admin', 'load', 'search'}
 
+"""
 print('stats' in paginas)
 print('admin' in paginas)
 print('load' in paginas)
@@ -28,7 +29,7 @@ try:
 except:
     print("error")
 
-
+"""
 
 print("")
 print("")
@@ -44,24 +45,24 @@ def comprobar(key_1):
     return val 
 
 def crear(key_2, valor):
-    if (comprobar(key_2) == False): 
-        redis.set(key_2, valor)
-        redis.set(f"{key_2}_visitas", 0)
-        redis.set(f"{key_2}_date", 0)
-        print(key_2)
-        print(redis.get(key_2))
-        print(redis.get(f"{key_2}_visitas"))
-        print(redis.get(f"{key_2}_date"))
+    print("")
+    if (comprobar(key_2) == False):
+        dicci = {} 
+        print(redis.setnx(key_2, valor)) 
+        print(redis.setnx(f"{key_2}_visitas", 0)) 
+        print(redis.setnx(f"{key_2}_date", datetime.now().strftime('%d-%m-%Y %H:%M:%S')))
+        #f"{date.today()}
+        dicci[key_2] = redis.get(key_2)
+        dicci[f"{key_2}_visitas"] = redis.get(f"{key_2}_visitas")
+        dicci[f"{key_2}_date"] = redis.get(f"{key_2}_date")
+        print(dicci)
     else:
         print("El key ya existe")
     
 
-key = "qwerty"
+key = "qwerty0"
 val = "www.google.com"
 
-print(date.today())
-print(datetime.now())
-print(type(date.today()))
 
 crear(key, val)
 
@@ -70,6 +71,12 @@ crear("url", val)
 crear("stats", val)
 
 crear(key, val)
+
+redis.delete(key)
+redis.delete(f"{key}_visitas")
+redis.delete(f"{key}_date")
+
+
 
 
 
