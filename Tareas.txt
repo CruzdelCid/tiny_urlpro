@@ -1,0 +1,4 @@
+COMANDOS DE REDIS
+- set: hace set de un key y un val cuando este no existe 
+- get: pide un valor cuando se le entrega el key
+- hgetall: retorna todos los valores
