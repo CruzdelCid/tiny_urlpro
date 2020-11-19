@@ -2,103 +2,82 @@ from redis import Redis
 import time
 from datetime import date
 from datetime import datetime
-
-print("PRUEBA PARA VERIFICAR SI ES UNA PÁGINA")
-paginas = {'', 'urls',  'stats', 'admin', 'load', 'search'}
+import random
 
 
 
-"""
-print('stats' in paginas)
-print('admin' in paginas)
-print('load' in paginas)
-print('search' in paginas)
-print('pr' in paginas)
-print('ueba' in paginas)
 
 
-print("")
-print("")
-print("PRUEBA DEL TRY EXCEPT")
 #https://www.w3schools.com/python/python_try_except.asp usemos try y except para evitarnos problemas
 #https://riptutorial.com/es/flask/example/7981/rutas-basicas con esto ponemos convertidores del id en la URL
 #Diccionario
-dicci = {"1":"uno", "dos":"2"}
-print(dicci['1'])
-print(dicci['dos'])
-try: 
-    print(dicci['4'])
-except:
-    print("error")
 
-"""
 
-print("")
-print("")
-print("PRUEBA GETALL DE REDIS")
 redis  = Redis('localhost', port=6379, charset="utf-8", decode_responses=True)
-#redis_visitas = Redis('localhost', port=7000, charset="utf-8", decode_responses=True)
 
 # print(redis.setnx(f"{key_2}_date", datetime.now().strftime('%d-%m-%Y %H:%M:%S')))
 
-def comprobar(key_1):
-    return False
+pages = {'urls', 'stats', 'admin', 'load', 'search'}
 
-def crear(key_2, valor):
-    print("")
-    if (comprobar(key_2) == False):
-        dicci = {} 
-        print(redis.setnx(key_2, valor)) 
-        #print(redis_visitas.setnx(key_2, 0))
+def generador(valor): 
+    word = valor.replace(".", "")
+    word = word.replace("/", "")
+    new_key = ""
+    num = "1234567890"
+    while word and len(new_key) < 7:
+        position = random.randrange(len(word))
+        new_key += word[position]
+        new_key += num[random.randrange(len(num))]
+        word = word[:position] + word[(position + 1):]
+    return new_key 
 
-        #f"{date.today()}
-        dicci[key_2] = redis.get(key_2)
-        #dicci[f"{key_2}_visitas"] = redis_visitas.get(key_2)
-        print(dicci)
+def comprobar(key): 
+    estado = False
+    keys = redis.keys('*')
+    if (key in pages): 
+        estado = True 
+    elif key in keys:
+        estado = True
+    return estado
+
+
+diccionario = {'url':'www.google.com', 'visitas': 0, 'date': ''}
+
+def crear(key, valor):
+    key = key.replace(" ", "")
+    if (key == ""):
+        key = generador(valor)
+
+    if (comprobar(key) == False):
+        dicci = {}
+        dicci['url'] = valor
+        dicci['visitas'] = 0
+        dicci['date'] = datetime.now().strftime('%d-%m-%Y %H:%M:%S')
+
+        print(redis.hmset(key, dicci)) 
+        print(key)
+        print(redis.hgetall(key)) 
+        return dicci
     else:
-        print("El key ya existe")
+        print(f"El key: {key} ya existe.")
     
 
-key = "qwerty"
-val = "www.google.com"
+key_p = "qwerty"
+val_p = "www.google.com"
 
 
-crear(key, val)
-"""
-crear("url", val)
-
-crear("stats", val)
-
-crear("Daniel", "www.facebook.com/daniel")
-
-crear(key, val)
+crear(key_p, val_p)
+crear("Marcoshdp", "www.google.com")
+crear("", "//www.page.com")
+crear("", "www.youtube.com/")
+crear("Daniel", "www.youtube.com/")
 
 
-
-redis.delete('*')
-redis.delete(f"{key}_visitas")
-redis.delete(f"{key}_date")
-"""
-
-print("ALV")
+print("")
 lista = redis.keys('*')
-#lista_visitas = redis_visitas.key('*')
 print(lista)
-#print(lista_visitas)
-
 for m in lista: 
     redis.delete(m)
 
-#for m in lista_visitas: 
-#    redis_visitas.delete(m)
-
 print(redis.keys('*'))
-print(redis.keys('*'))
-
-
-
-
-
-
-
 

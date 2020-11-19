@@ -1,56 +1,17 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, url_for
 from redis import Redis 
 
-pages = {'', 'stats', 'admin', 'load', 'search'}
-
-<<<<<<< HEAD
-=======
-#Diccionario
-dicci = {"1":"uno", "dos":"2"}
-print(dicci['1'])
-print(dicci['dos'])
-try: 
-    print(dicci['2'])
-except:
-    print("error")
->>>>>>> 400c38ed23a0e37964c5bc470755dbe940565aa6
-
-
-"""
+pages = {'', 'urls',  'stats', 'admin', 'load', 'search'} 
 redis  = Redis('localhost', port=6379, charset="utf-8", decode_responses=True)
-redis_visitas = Redis('localhost', port=6379, charset="utf-8", decode_responses=True)
-redis_date = Redis('localhost', port=6379, charset="utf-8", decode_responses=True)
-
-
-
-user = {"Nombre":"Cruz del Cid", "Carnet":"20200394", "edad":"17", "País":"Guatemala"}
-
-conn.hmset("my_information", user)
-conn.set("alv", "Hola mundo")
-
-print(conn.hgetall("my_information", "Nombre"))
-print(type(conn.hgetall("my_information")))
-
-print(conn.hget("my_information", "Nombre"))
-print(conn.get("alv"))
-""" 
-
-
+app = Flask(__name__)
 
 
 #Investigar codificador
-#
 def comprobar(key): 
     val = False
     if (key in pages):
         val = True
     return val
-
-def new_tiny(key = None): 
-    pass
-
-
-app = Flask(__name__)
 
 
 #New tiny
@@ -58,7 +19,6 @@ app = Flask(__name__)
 @app.route("/", methods = ["GET", "SET"])
 def tiny_url(): 
     if (request.method == "GET"):
-
         pass 
     #comprobar
     #crear un tiny
