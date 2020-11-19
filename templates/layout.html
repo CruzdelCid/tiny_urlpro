@@ -1,0 +1,36 @@
+<style type="text/css">
+    .circular--square{
+      border-radius: 50%;
+      align-items: center;
+    }
+    </style>
+    
+    <h1 class="text-center">String Handler</h1>
+    
+    <div class="card text-center" style="width: 18rem;">
+      <img class="circular--square" src="/static/perfil.jpg" alt="">
+        <div class="card-body">
+          <p class="card-text">Daniel Behar A.</p>
+        </div>
+      </div>
+    
+    <div class="col-xl-5 col-lg-6 col-md-8 col-sm-10 mx-auto text-center form p-4">
+    <form action="" class="justify-content-center">
+        <div class="form-group">
+            <label class="sr-only">String: </label>
+            <input name="texto" type="text" class="form-control text-center" placeholder="Type string...">
+        </div>
+        <button type="submit" class="btn btn-primary btn-lg">Handle</button>
+    </form>
+    
+    <ul class="list-group">
+    <br>
+    {% for k,v in result.items() %}
+       <li class="list-group-item">
+        <b>{{k}} :</b> {{v}}
+       </li>
+    {% endfor %}
+    
+    </div>
+    
+    {% endblock %}
