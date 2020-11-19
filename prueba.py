@@ -9,6 +9,7 @@ import random
 #https://riptutorial.com/es/flask/example/7981/rutas-basicas con esto ponemos convertidores del id en la URL
 #Diccionario
 
+
 #Definicion servidor de redis
 redis = Redis('localhost', port=6379, charset="utf-8", decode_responses=True)
 
@@ -88,6 +89,7 @@ crear("Daniel", "www.youtube.com/")
 print("")
 lista = redis.keys('*')
 print(lista)
+
 
 #Funcion que borra todos los elementos en el redis
 for m in lista: 
