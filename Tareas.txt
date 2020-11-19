@@ -4,7 +4,7 @@ COMANDOS DE REDIS
 - hgetall: retorna todos los valores
 
 
-1. Pagina de URLs Tiny (form para crear tinys y recibirlo) USAR SETNX
+1. Pagina de URLs Tiny (form para crear tinys y recibirlo)
     Puede recibir texto para crear diccionarios en redis y debe imprimir texto
 2. Pagina para ver todas las URLs (y eliminar alguna)
     Solo debe imprimir texto pero puede eliminar diccionarios
@@ -12,11 +12,10 @@ COMANDOS DE REDIS
     Solo imprime visitas y urls
 4. Form navbar
 
-PRUEBAS PEND:
-1. Probar redis con SETNX
-2. Ver como redis nos devuelve todos los keys (si puede y como lo hace)
-3. Ver como modificar un diccionario ya creado
 
-FUNCIONES:
-1. Comprobar: verifica si el key ya existe
-2. Buscar: busca una URL (el key)
+PRUEBAS PEND:
+1. Ver como modificar un elemento de un diccionario ya creado y almacenado
+
+
+FUNCIONES PEND:
+1. Buscar: busca una URL (el key)
