@@ -20,7 +20,6 @@ pages = {'urls', 'stats', 'admin', 'load', 'search'}
 
 #Generacion del key donde se guardara la url normal en el redis
 def generador(valor): 
-
     word = valor.replace(".", "")
     word = word.replace("/", "")
     new_key = ""
@@ -36,7 +35,6 @@ def generador(valor):
 
 #Comprobacion de que el key generado sea unico y no coincida con nuestros urls internos
 def comprobar(key): 
-
     estado = False
     keys = redis.keys('*')
 
@@ -47,9 +45,8 @@ def comprobar(key):
     return estado
 
 
-#Prueba
+#Ejemplo
 diccionario = {'url':'www.google.com', 'visitas': 0, 'date': ''}
-
 
 #Creacion de elementso en el redis, ya con las verificaciones respectivas
 def crear(key, valor):

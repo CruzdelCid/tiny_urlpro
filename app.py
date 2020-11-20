@@ -1,28 +1,79 @@
-from flask import Flask, request, render_template, url_for
+from flask import Flask, request, render_template, url_for, redirect
 from redis import Redis 
+from datetime import date
+from datetime import datetime
+import random
 
 pages = {'', 'urls',  'stats', 'admin', 'load', 'search'} 
 redis  = Redis('localhost', port=6379, charset="utf-8", decode_responses=True)
 app = Flask(__name__)
 
 
-#Investigar codificador
+
+#Generacion del key donde se guardara la url normal en el redis
+def generador(valor): 
+    word = valor.replace(".", "")
+    word = word.replace("/", "")
+    new_key = ""
+    num = "1234567890"
+
+    while word and len(new_key) < 7:
+        position = random.randrange(len(word))
+        new_key += word[position]
+        new_key += num[random.randrange(len(num))]
+        word = word[:position] + word[(position + 1):]
+    return new_key 
+
+
+#Comprobacion de que el key generado sea unico y no coincida con nuestros urls internos
 def comprobar(key): 
-    val = False
-    if (key in pages):
-        val = True
-    return val
+    estado = False
+    keys = redis.keys('*')
+
+    if (key in pages): 
+        estado = True 
+    elif key in keys:
+        estado = True
+    return estado
+
+
+#Ejemplo
+diccionario = {'url':'www.google.com', 'visitas': 0, 'date': ''}
+
+#Creacion de elementso en el redis, ya con las verificaciones respectivas
+def crear(key, valor):
+
+    key = key.replace(" ", "")
+
+    if (key == ""):
+        key = generador(valor)
+
+    if (comprobar(key) == False):
+        dicci = {}
+        dicci['url'] = valor
+        dicci['visitas'] = 0
+        dicci['date'] = datetime.now().strftime('%d-%m-%Y %H:%M:%S')
+
+        print(redis.hmset(key, dicci)) 
+        print(key)
+        print(redis.hgetall(key)) 
+        return dicci
+
+    else:
+        print(f"El key: {key} ya existe.")
+
+crear("hola", "https://www.youtube.com/?hl=es-419")
+crear("FFF", "https://www.ufm.edu/Portal")
 
 
 #New tiny
 #methods = ["GET", "SET"]
-@app.route("/", methods = ["GET", "SET"])
-def tiny_url(): 
-    if (request.method == "GET"):
-        pass 
-    #comprobar
-    #crear un tiny
-    return "HELLO WORLD"
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    urlLarga = request.args.get("URL", "")
+    keyOp = request.args.get("Key", "")
+    result = crear(keyOp, urlLarga)
+    return render_template("index.html", key=keyOp, result=result)
 
 #https://tin.com/admin
 #URL list
@@ -37,38 +88,36 @@ def stats():
 def admin():
     pass
 
+
 @app.route("/load")
 def load():
     pass
 
-#Buscar
+#Buscar url
 @app.route("/search")
 def search():
     pass
 
-@app.route("/pais")
-def pais():
-    return "Guatemala"
-
-
+#Imprime las URLs
 @app.route("/urls", methods = ["DELETE"] )
 def urls():
     return "prueba de otras rutas"
+
+#Maneja el error 404 propio de la app
+@app.route("/error")
+def error():
+    return render_template("index.html")
     
 #Entrar a un Tiny_URL 
 @app.route("/<string_v>")
 def prueba(string_v=None):
-    #Buscar 
-    #Devolver URL y Código: 301 
-    #Invetigar para que se retorne la página 
-    return "Palabra: " + string_v
-
-"""
-    try:
-        return "Palabra: " + string_v
-    except: 
-        return "HELLO WORLD!"
-"""
+    url = redis.hget(string_v, 'url')
+    if (url == None):
+        return redirect("/error")
+    else:
+        print(url)
+        print(type(url))
+        return redirect(url)
 
 if __name__ == "__main__": 
     app.run(host = "0.0.0.0", port = 5000, debug = True)
