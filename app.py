@@ -4,7 +4,7 @@ from datetime import date
 from datetime import datetime
 import random
 
-pages = {'', 'urls',  'stats', 'admin', 'load', 'search'} 
+pages = ('', 'urls',  'stats', 'admin', 'load', 'search')
 redis  = Redis('localhost', port=6379, charset="utf-8", decode_responses=True)
 app = Flask(__name__)
 
@@ -14,6 +14,7 @@ app = Flask(__name__)
 def generador(valor): 
     word = valor.replace(".", "")
     word = word.replace("/", "")
+    word = word.replace(":", "")
     new_key = ""
     num = "1234567890"
 
@@ -48,6 +49,13 @@ def reset():
         redis.delete(m)
     print(redis.keys('*'))
 
+def lista(): 
+    lista = redis.keys('*')
+    print(lista)
+    for m in lista: 
+        print(redis.hgetall(m)) 
+    
+
 #Creacion de elementso en el redis, ya con las verificaciones respectivas
 def crear(key, valor):
     key = key.replace(" ", "")
@@ -72,7 +80,8 @@ def crear(key, valor):
             print(f"El key: {key} ya existe.")
             return {}
         
-
+#lista()
+#reset()
 #crear("hola", "https://www.youtube.com/?hl=es-419")
 #crear("FFF", "https://www.ufm.edu/Portal")
 #crear("", "https://motionarray.com/browse")
@@ -111,7 +120,13 @@ def search():
 #Imprime las URLs
 @app.route("/urls")
 def urls():
-    return "urls"
+    urls = {}
+    ke = redis.keys("*")
+    if (ke): 
+        for key in ke: 
+            urls[key] = redis.hgetall(key)
+    print(urls)
+    return render_template("urls.html", urls = urls)
 
 #Maneja el error 404 propio de la app
 @app.route("/error")
