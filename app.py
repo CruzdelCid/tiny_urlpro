@@ -120,6 +120,9 @@ def search():
 #Imprime las URLs
 @app.route("/urls")
 def urls():
+    key_borrar = request.args.get("keyb", "")
+    if key_borrar:
+        redis.delete(key_borrar)
     urls = {}
     ke = redis.keys("*")
     if (ke): 
