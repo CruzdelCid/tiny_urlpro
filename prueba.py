@@ -10,13 +10,12 @@ import random
 #Diccionario
 
 
-#Definicion servidor de redis
+#Definicion servidor de redisa
 redis = Redis('localhost', port=6379, charset="utf-8", decode_responses=True)
 
 
 #Estas direcciones las usaremos en nuestra aplicacion, por lo que definimos aca las palabras que NO aceptaremos 
 pages = {'urls', 'stats', 'admin', 'load', 'search'}
-
 
 #Generacion del key donde se guardara la url normal en el redis
 def generador(valor): 
@@ -37,7 +36,6 @@ def generador(valor):
 def comprobar(key): 
     estado = False
     keys = redis.keys('*')
-
     if (key in pages): 
         estado = True 
     elif key in keys:
@@ -45,8 +43,9 @@ def comprobar(key):
     return estado
 
 
-#Ejemplo
+#Prueba
 diccionario = {'url':'www.google.com', 'visitas': 0, 'date': ''}
+
 
 #Creacion de elementso en el redis, ya con las verificaciones respectivas
 def crear(key, valor):

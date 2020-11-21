@@ -37,34 +37,45 @@ def comprobar(key):
     return estado
 
 
-#Ejemplo
-diccionario = {'url':'www.google.com', 'visitas': 0, 'date': ''}
+#Ejemplo inciial
+diccionario = {'url':'www.google.com', 'visitas': 0, 'date': '20-11-2020'}
+
+#Funcion que borra todos los elementos en el redis
+def reset(): 
+    lista = redis.keys('*')
+    print(lista)
+    for m in lista: 
+        redis.delete(m)
+    print(redis.keys('*'))
 
 #Creacion de elementso en el redis, ya con las verificaciones respectivas
 def crear(key, valor):
-
     key = key.replace(" ", "")
-
-    if (key == ""):
-        key = generador(valor)
-
-    if (comprobar(key) == False):
-        dicci = {}
-        dicci['url'] = valor
-        dicci['visitas'] = 0
-        dicci['date'] = datetime.now().strftime('%d-%m-%Y %H:%M:%S')
-
-        print(redis.hmset(key, dicci)) 
-        print(key)
-        print(redis.hgetall(key)) 
-        return dicci
-
+    if (valor == ""):
+        return {}
     else:
-        print(f"El key: {key} ya existe.")
+        if (key == "" and valor != ""):
+            key = generador(valor)
 
-crear("hola", "https://www.youtube.com/?hl=es-419")
-crear("FFF", "https://www.ufm.edu/Portal")
-crear("", "https://motionarray.com/browse")
+        if (comprobar(key) == False and valor != ""):
+            dicci = {}
+            dicci['key'] = key 
+            dicci['url'] = valor
+            dicci['visitas'] = 0
+            dicci['date'] = datetime.now().strftime('%d-%m-%Y %H:%M:%S')
+
+            print(redis.hmset(key, dicci)) 
+            print(key)
+            print(redis.hgetall(key)) 
+            return dicci
+        else:
+            print(f"El key: {key} ya existe.")
+            return {}
+        
+
+#crear("hola", "https://www.youtube.com/?hl=es-419")
+#crear("FFF", "https://www.ufm.edu/Portal")
+#crear("", "https://motionarray.com/browse")
 
 
 #New tiny
@@ -72,53 +83,58 @@ crear("", "https://motionarray.com/browse")
 @app.route('/', methods=['GET', 'POST'])
 def index():
     urlLarga = request.args.get("URL", "")
-    keyOp = request.args.get("Key", "")
+    keyOp = request.args.get("key", "")
     result = crear(keyOp, urlLarga)
-    return render_template("index.html", key=keyOp, result=result)
-
-#https://tin.com/admin
-#URL list
+    #result = {'key':'qwerty', 'url':"www.google.com", 'visitas': 1000, 'date':'20-11-2020'}
+    return render_template("index.html", result=result)
 
 
 @app.route("/stats")
 def stats():
-    pass
+    return "stats"
 
 #administración del equipo
 @app.route("/admin")
 def admin():
-    pass
+    return "admin"
 
 
 @app.route("/load")
 def load():
-    pass
+    return "load"
 
 #Buscar url
 @app.route("/search")
 def search():
-    pass
+    return "search"
 
 #Imprime las URLs
-@app.route("/urls", methods = ["DELETE"] )
+@app.route("/urls")
 def urls():
-    return "prueba de otras rutas"
+    return "urls"
 
 #Maneja el error 404 propio de la app
 @app.route("/error")
 def error():
-    return render_template("index.html")
+    return render_template("navbar.html")
     
 #Entrar a un Tiny_URL 
 @app.route("/<string_v>")
 def prueba(string_v=None):
+    print(string_v)
     url = redis.hget(string_v, 'url')
+    print(type(url))
     if (url == None):
         return redirect("/error")
     else:
+        vist = int(redis.hget(string_v, 'visitas')) + 1
+        print(vist)
+        print(type(vist))
+        redis.hset(string_v, 'visitas', vist)
         print(url)
         print(type(url))
         return redirect(url)
+
 
 if __name__ == "__main__": 
     app.run(host = "0.0.0.0", port = 5000, debug = True)
