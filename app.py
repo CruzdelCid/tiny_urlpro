@@ -100,7 +100,13 @@ def index():
 
 @app.route("/stats")
 def stats():
-    return "stats"
+    urls = {}
+    ke = redis.keys("*")
+    if (ke): 
+        for key in ke: 
+            urls[key] = redis.hgetall(key)
+    print(urls)
+    return render_template("visits.html", urls = urls)
 
 #administración del equipo
 @app.route("/admin")

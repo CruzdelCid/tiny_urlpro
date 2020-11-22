@@ -13,9 +13,5 @@ COMANDOS DE REDIS
 4. Form navbar
 
 
-PRUEBAS PEND:
-1. Ver como modificar un elemento de un diccionario ya creado y almacenado
-
-
 FUNCIONES PEND:
 1. Buscar: busca una URL (el key)
