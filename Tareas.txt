@@ -1,3 +1,0 @@
-1. Página de admin 
-        - pedir login
-        - boton para hacer flush

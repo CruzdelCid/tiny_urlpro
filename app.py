@@ -81,6 +81,7 @@ def crear(key, valor):
             print(f"El key: {key} ya existe.")
             return {}
         
+
 @app.route("/eliminar")
 def eliminar():
     lista = redis.keys('*')
