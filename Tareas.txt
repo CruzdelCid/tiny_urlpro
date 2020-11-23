@@ -1,16 +1,9 @@
-COMANDOS DE REDIS
-- set: hace set de un key y un val cuando este no existe 
-- get: pide un valor cuando se le entrega el key
-- hgetall: retorna todos los valores
-
-
-1. Pagina de URLs Tiny (form para crear tinys y recibirlo)
-    Puede recibir texto para crear diccionarios en redis y debe imprimir texto
-2. Pagina para ver todas las URLs (y eliminar alguna)
-    Solo debe imprimir texto pero puede eliminar diccionarios
-3. Pagina de visitas por URL
-    Solo imprime visitas y urls
-4. Form navbar
+1. Form navbar
+2. Layout con todas sus funciones 
+4. Página de admin 
+        - pedir login
+        - boton para hacer flush
+5. Pagina search
 
 
 FUNCIONES PEND:

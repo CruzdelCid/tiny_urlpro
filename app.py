@@ -113,11 +113,6 @@ def stats():
 def admin():
     return "admin"
 
-
-@app.route("/load")
-def load():
-    return "load"
-
 #Buscar url
 @app.route("/search")
 def search():
@@ -140,7 +135,7 @@ def urls():
 #Maneja el error 404 propio de la app
 @app.route("/error")
 def error():
-    return render_template("navbar.html")
+    return render_template("error.html")
     
 #Entrar a un Tiny_URL 
 @app.route("/<string_v>")

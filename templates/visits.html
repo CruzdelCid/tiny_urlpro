@@ -18,6 +18,7 @@
           <tr>
             <th scope="col">Tiny_URL</th>
             <th scope="col">Original URL</th>
+            <th scope="col">Creacion</th>
             <th scope="col">Visitas</th> 
           </tr>
         </thead>
@@ -26,6 +27,7 @@
           <tr>
             <td>localhost:5000/{{k}}</td>
             <td>{{v['url']}}</td>
+            <td>{{v['date']}}</td>
             <td>{{v['visitas']}}</td>
           </tr>
         {% endfor %}
