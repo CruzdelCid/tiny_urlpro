@@ -1,0 +1,35 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+    <h1 class="text-center">Admin</h1>
+    <div class="col-xl-5 col-lg-6 col-md-8 col-sm-10 mx-auto text-center form p-4">
+      <form action="" class="justify-content-center">
+          <div class="form-group">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">Usuario</span>
+                </div>
+                <input name="Usuario" type="text" placeholder="Usuario" class="form-control">
+              </div>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">Clave</span>
+                </div>
+                <input name="Clave" type="text" placeholder="Clave" class="form-control">
+              </div>
+          </div>
+          <button type="submit" class="btn btn-primary btn-lg">Ingresar</button>
+      </form> 
+    </div>
+    {% if validacion %}
+    <h4 class="text-center">Presione el boton para eliminar toda la base de datos</h4>
+    <div class="col-xl-5 col-lg-6 col-md-8 col-sm-10 mx-auto text-center form p-4">
+        <form action="eliminar" class="justify-content-center">
+            <button type="submit" class="btn btn-primary btn-lg">Ejecutar</button>
+        </form> 
+      </div>
+
+    {% endif %}
+
+    
+{% endblock %} 

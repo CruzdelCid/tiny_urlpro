@@ -4,10 +4,9 @@ from datetime import date
 from datetime import datetime
 import random
 
-pages = ('', 'urls',  'stats', 'admin', 'load', 'search')
+pages = ('', 'urls',  'stats', 'admin', 'load', 'search', 'eliminar')
 redis  = Redis('localhost', port=6379, charset="utf-8", decode_responses=True)
 app = Flask(__name__)
-
 
 
 #Generacion del key donde se guardara la url normal en el redis
@@ -15,6 +14,7 @@ def generador(valor):
     word = valor.replace(".", "")
     word = word.replace("/", "")
     word = word.replace(":", "")
+    word = word.replace("=", "")
     new_key = ""
     num = "1234567890"
 
@@ -38,8 +38,9 @@ def comprobar(key):
     return estado
 
 
-#Ejemplo inciial
+#Ejemplo incial
 diccionario = {'url':'www.google.com', 'visitas': 0, 'date': '20-11-2020'}
+
 
 #Funcion que borra todos los elementos en el redis
 def reset(): 
@@ -80,24 +81,25 @@ def crear(key, valor):
             print(f"El key: {key} ya existe.")
             return {}
         
-#lista()
-#reset()
-#crear("hola", "https://www.youtube.com/?hl=es-419")
-#crear("FFF", "https://www.ufm.edu/Portal")
-#crear("", "https://motionarray.com/browse")
+@app.route("/eliminar")
+def eliminar():
+    lista = redis.keys('*')
+    for m in lista: 
+        redis.delete(m)
 
+    return redirect("/urls")
+    
 
-#New tiny
 #methods = ["GET", "SET"]
 @app.route('/', methods=['GET', 'POST'])
 def index():
     urlLarga = request.args.get("URL", "")
     keyOp = request.args.get("key", "")
     result = crear(keyOp, urlLarga)
-    #result = {'key':'qwerty', 'url':"www.google.com", 'visitas': 1000, 'date':'20-11-2020'}
     return render_template("index.html", result=result)
 
 
+#cantidad de visitas
 @app.route("/stats")
 def stats():
     urls = {}
@@ -108,15 +110,33 @@ def stats():
     print(urls)
     return render_template("visits.html", urls = urls)
 
+
 #administración del equipo
-@app.route("/admin")
+@app.route("/admin", methods=['GET', 'POST'])
 def admin():
-    return "admin"
+    Usua = request.args.get("Usuario", "")
+    Contra = request.args.get("Clave", "")
+    validacion = ""
+
+    if(Usua == "Marcos" and Contra == "CS052"):
+        validacion = "VERDAD"
+
+    return render_template("admin.html", validacion=validacion)
+
 
 #Buscar url
-@app.route("/search")
+@app.route("/search", methods=['GET', 'POST'])
 def search():
-    return "search"
+    Busc = request.args.get("key", "")
+    urls = {}
+    ke = redis.keys("*")
+    if (ke): 
+        for key in ke: 
+            if (key == Busc):
+                urls[key] = redis.hgetall(key)
+    print(urls)
+    return render_template("search.html", urls = urls)
+
 
 #Imprime las URLs
 @app.route("/urls")
@@ -132,11 +152,13 @@ def urls():
     print(urls)
     return render_template("urls.html", urls = urls)
 
+
 #Maneja el error 404 propio de la app
 @app.route("/error")
 def error():
     return render_template("error.html")
-    
+
+
 #Entrar a un Tiny_URL 
 @app.route("/<string_v>")
 def prueba(string_v=None):
