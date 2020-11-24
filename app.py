@@ -1,11 +1,13 @@
 from flask import Flask, request, render_template, url_for, redirect
-from redis import Redis 
+import redis 
 from datetime import date
 from datetime import datetime
 import random
+import os
 
 pages = ('', 'urls',  'stats', 'admin', 'load', 'search', 'eliminar')
-redis  = Redis('localhost', port=6379, charset="utf-8", decode_responses=True)
+REDIS_HOST = os.getenv("REDIS_HOST", None)
+redis = redis.Redis(host=REDIS_HOST, port=6379, charset="utf-8", decode_responses=True)
 app = Flask(__name__)
 
 
