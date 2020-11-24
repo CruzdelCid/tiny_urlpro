@@ -30,7 +30,6 @@ def generador(valor):
 def comprobar(key): 
     estado = False
     keys = redis.keys('*')
-
     if (key in pages): 
         estado = True 
     elif key in keys:
@@ -45,14 +44,11 @@ diccionario = {'url':'www.google.com', 'visitas': 0, 'date': '20-11-2020'}
 #Funcion que borra todos los elementos en el redis
 def reset(): 
     lista = redis.keys('*')
-    print(lista)
     for m in lista: 
         redis.delete(m)
-    print(redis.keys('*'))
 
 def lista(): 
     lista = redis.keys('*')
-    print(lista)
     for m in lista: 
         print(redis.hgetall(m)) 
     
@@ -73,9 +69,7 @@ def crear(key, valor):
             dicci['visitas'] = 0
             dicci['date'] = datetime.now().strftime('%d-%m-%Y %H:%M:%S')
 
-            print(redis.hmset(key, dicci)) 
-            print(key)
-            print(redis.hgetall(key)) 
+            redis.hmset(key, dicci)
             return dicci
         else:
             print(f"El key: {key} ya existe.")
@@ -108,7 +102,6 @@ def stats():
     if (ke): 
         for key in ke: 
             urls[key] = redis.hgetall(key)
-    print(urls)
     return render_template("visits.html", urls = urls)
 
 
@@ -135,7 +128,6 @@ def search():
         for key in ke: 
             if (key == Busc):
                 urls[key] = redis.hgetall(key)
-    print(urls)
     return render_template("search.html", urls = urls)
 
 
@@ -150,7 +142,6 @@ def urls():
     if (ke): 
         for key in ke: 
             urls[key] = redis.hgetall(key)
-    print(urls)
     return render_template("urls.html", urls = urls)
 
 
@@ -163,18 +154,13 @@ def error():
 #Entrar a un Tiny_URL 
 @app.route("/<string_v>")
 def prueba(string_v=None):
-    print(string_v)
     url = redis.hget(string_v, 'url')
-    print(type(url))
     if (url == None):
         return redirect("/error")
     else:
         vist = int(redis.hget(string_v, 'visitas')) + 1
-        print(vist)
-        print(type(vist))
         redis.hset(string_v, 'visitas', vist)
         print(url)
-        print(type(url))
         return redirect(url)
 
 
