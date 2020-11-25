@@ -40,15 +40,10 @@ def comprobar(key):
 
 
 #Ejemplo incial
-diccionario = {'url':'www.google.com', 'visitas': 0, 'date': '20-11-2020'}
+diccionario = {'key': 'QWERTY','url':'www.google.com', 'visitas': 0, 'date': '20-11-2020'}
 
 
-#Funcion que borra todos los elementos en el redis
-def reset(): 
-    lista = redis.keys('*')
-    for m in lista: 
-        redis.delete(m)
-
+#Funcion listar
 def lista(): 
     lista = redis.keys('*')
     for m in lista: 
@@ -78,6 +73,7 @@ def crear(key, valor):
             return {}
         
 
+#Funcion que borra todos los elementos en el redis
 @app.route("/eliminar")
 def eliminar():
     lista = redis.keys('*')
@@ -124,6 +120,9 @@ def admin():
 @app.route("/search", methods=['GET', 'POST'])
 def search():
     Busc = request.args.get("key", "")
+    key_borrar = request.args.get("keyb", "")
+    if key_borrar:
+        redis.delete(key_borrar)
     urls = {}
     ke = redis.keys("*")
     if (ke): 
@@ -162,7 +161,6 @@ def prueba(string_v=None):
     else:
         vist = int(redis.hget(string_v, 'visitas')) + 1
         redis.hset(string_v, 'visitas', vist)
-        print(url)
         return redirect(url)
 
 
