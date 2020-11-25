@@ -102,6 +102,18 @@ def stats():
             urls[key] = redis.hgetall(key)
     return render_template("visits.html", urls = urls)
 
+#Imprime las URLs
+@app.route("/urls")
+def urls():
+    key_borrar = request.args.get("keyb", "")
+    if key_borrar:
+        redis.delete(key_borrar)
+    urls = {}
+    ke = redis.keys("*")
+    if (ke): 
+        for key in ke: 
+            urls[key] = redis.hgetall(key)
+    return render_template("urls.html", urls = urls)
 
 #administración del equipo
 @app.route("/admin", methods=['GET', 'POST'])
@@ -132,18 +144,7 @@ def search():
     return render_template("search.html", urls = urls)
 
 
-#Imprime las URLs
-@app.route("/urls")
-def urls():
-    key_borrar = request.args.get("keyb", "")
-    if key_borrar:
-        redis.delete(key_borrar)
-    urls = {}
-    ke = redis.keys("*")
-    if (ke): 
-        for key in ke: 
-            urls[key] = redis.hgetall(key)
-    return render_template("urls.html", urls = urls)
+
 
 
 #Maneja el error 404 propio de la app
